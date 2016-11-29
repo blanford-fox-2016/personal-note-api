@@ -49,7 +49,7 @@ describe('edit users', function() {
           chai.request(urlApi)
               .put(`/users`)
               .send({
-                  id: res.body[0].id,
+                  id: res.body[0].user_id,
                   name: 'newUser',
                   age: 44
               })
@@ -70,17 +70,12 @@ describe('Route delete all users', function() {
       chai.request(urlApi)
           .delete(`/users`)
           .send({
-              id: res.body[0].id
+              id: res.body[0].user_id
           })
           .end(function(err, res) {
-            chai.request(urlApi)
-                .get('/users')
-                .end(function(err, res) {
                   expect(res.body.name).to.be.equal('newUser')
                   expect(res.body.age).to.be.equal(44)
-                  expect(res.body.length).to.be.equal(0)
                   done()
-            })
           })
         })
     })
