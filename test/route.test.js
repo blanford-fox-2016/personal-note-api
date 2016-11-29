@@ -39,6 +39,25 @@ describe('get all users', function() {
                 }) // chai
         }) // it
 })
+
+describe('get users by id', function() {
+    it('expect to return one user by id', function(done) {
+      chai.request(urlApi)
+          .get('/users')
+          .end(function(err, res) {
+            let currentId = res.body[0].user_id
+            let currentName = res.body[0].name
+            let currentAge = res.body[0].age
+            chai.request(urlApi)
+                .get(`/users/${currentId}`)
+                .end(function(err, res) {
+                  expect(res.body.name).to.be.equal(currentName)
+                  expect(res.body.age).to.be.equal(currentAge)
+                  done()
+                })
+          })
+    })
+})
 //
 //
 describe('edit users', function() {
@@ -62,7 +81,99 @@ describe('edit users', function() {
         })
     })
 
-describe('Route delete all users', function() {
+describe('Add new note', function() {
+    it('expect to add new note on user', function(done) {
+      chai.request(urlApi)
+          .get('/users')
+          .end(function(err, res) {
+            let currentId = res.body[0].user_id
+            let currentName = res.body[0].name
+            let currentAge = res.body[0].age
+            console.log('users : ', {currentId, currentName, currentAge});
+            chai.request(urlApi)
+                .get(`/users/${currentId}`)
+                .end(function(err, res) {
+                  chai.request(urlApi)
+                      .post('/notes')
+                      .send({
+                        title: 'Belanja',
+                        content: 'Sepatu, tas, buku',
+                        user_id: currentId
+                      })
+                      .end(function(req, res) {
+                        expect(res.body.title).to.be.equal('Belanja')
+                        expect(res.body.content).to.be.equal('Sepatu, tas, buku')
+                      })
+                  done()
+                })
+          })
+    })
+})
+
+describe('get One note by ID', function() {
+  it('expect to return one note', function(done) {
+    chai.request(urlApi)
+        .get('/notes')
+        .end(function(err, res) {
+          let note_id = res.body[0].note_id
+          let title = res.body[0].title
+          let content = res.body[0].content
+          console.log('data :',{
+            note_id,
+            title,
+            content
+          });
+          chai.request(urlApi)
+              .get(`/notes/${note_id}`)
+              .end(function(err, res) {
+                expect(res.body.title).to.be.equal(title)
+                expect(res.body.content).to.be.equal(content)
+                done()
+              })
+        })
+  })
+})
+
+describe('Edit a note by Id', function() {
+  it('expect to edit note by id', function(done) {
+    chai.request(urlApi)
+        .get(`/notes`)
+        .end(function(err, res) {
+          chai.request(urlApi)
+              .put(`/notes/${res.body[0].note_id}`)
+              .send({
+                title: 'Belanja Bulanan',
+                content: 'Rak buku'
+              })
+              .end(function(err, res) {
+                expect(res.body.title).to.be.equal('Belanja Bulanan')
+                expect(res.body.content).to.be.equal('Rak buku')
+                done()
+              })
+        })
+  })
+})
+
+describe('Delete a note by Id', function() {
+  it('expect to delete note by id', function(done) {
+    chai.request(urlApi)
+        .get(`/notes`)
+        .end(function(err, res) {
+          let note_id = res.body[0].note_id
+          let title = res.body[0].title
+          let content = res.body[0].content
+          chai.request(urlApi)
+              .delete(`/notes/${note_id}`)
+              .end(function(err, res) {
+                expect(res.body.title).to.be.equal(title)
+                expect(res.body.content).to.be.equal(content)
+                done()
+              })
+        })
+  })
+})
+
+describe('Route delete users', function() {
     it('expect to return users length and user deleted', function(done) {
       chai.request(urlApi)
           .get('/users')

@@ -1,11 +1,13 @@
 'use strict'
-const User = require('../models/user.model')
+
+let note = require('../models/note.model')
 
 module.exports = {
-  createUser: function(req, res) {
-    User.create({
-      name: req.body.name,
-      age: req.body.age
+  addNote: function(req, res) {
+    note.create({
+      title: req.body.title,
+      content: req.body.content,
+      user_id: req.body.user_id
     }, (err, data) => {
       if (err) {
         console.log(err);
@@ -15,8 +17,8 @@ module.exports = {
       }
     })
   },
-  getAllUser: function(req, res) {
-    User.find({}, (err, data)=> {
+  showAllNotes: function(req, res) {
+    note.find({}, (err, data)=> {
       if (err) {
         console.log(err);
         res.json({message: `Error: ${err}`})
@@ -25,10 +27,10 @@ module.exports = {
       }
     })
   },
-  getOneUser: function(req, res) {
-    User.findOne({
-      user_id: req.params.id
-    }, (err, data) => {
+  getNoteById: function(req, res) {
+    note.findOne({
+      note_id: req.params.id
+    }, (err, data)=> {
       if (err) {
         console.log(err);
         res.json({message: `Error: ${err}`})
@@ -37,33 +39,36 @@ module.exports = {
       }
     })
   },
-  editUser: function(req, res) {
-    User.findOneAndUpdate({
-      user_id: req.body.id
+  editNote: function(req, res) {
+    note.findOneAndUpdate({
+      note_id: req.params.id
     }, {
-      name: req.body.name,
-      age: req.body.age
+      title: req.body.title,
+      content: req.body.content
     }, {
       new: true
-    }, (err, data)=> {
+    }, (err, data) => {
       if (err) {
         console.log(err);
         res.json({message: `Error: ${err}`})
       } else {
+        console.log('edit controller :', data);
         res.json(data)
       }
     })
   },
-  deleteUser: function(req, res) {
-    User.findOneAndRemove({
-      user_id: req.body.id
-    }, (err, data)=> {
+  deleteNote: function(req, res) {
+    note.findOneAndRemove({
+      note_id: req.params.id
+    }, (err, data) => {
       if (err) {
         console.log(err);
         res.json({message: `Error: ${err}`})
       } else {
+        console.log('data delete :', data);
         res.json(data)
       }
     })
   }
+
 }
