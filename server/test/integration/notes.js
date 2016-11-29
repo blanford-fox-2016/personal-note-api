@@ -7,13 +7,19 @@ const expect = chai.expect
 const chaiHttp = require('chai-http')
 chai.use(chaiHttp)
 
-describe.only("Test for users", () => {
+describe("Test for notes", () => {
 
     before((done) => {
         chai.request(app)
             .get('/api/users/seed')
             .end((err, res) => {
                 console.log("User seeded")
+            })
+
+        chai.request(app)
+            .get('/api/notes/seed')
+            .end((err, res) => {
+                console.log("Notes seeded")
                 done()
             })
     })
@@ -23,45 +29,51 @@ describe.only("Test for users", () => {
             .delete('/api/users/all')
             .end((err, res) => {
                 console.log("All users deleted")
+            })
+
+        chai.request(app)
+            .delete('/api/notes/all')
+            .end((err, res) => {
+                console.log("All notes deleted")
                 done()
             })
     })
 
-    describe("Test if can get all users", () => {
-        it("Expect to return all list of users", (done) => {
+    describe("Test if can get all notes", () => {
+        it("Expect to return all list of notes", (done) => {
 
             chai.request(app)
-                .get('/api/users')
+                .get('/api/notes')
                 .end((err, res) => {
                     expect(res.body).that.is.an('array')
                     expect(res).to.have.status(200)
-                    expect(res.body[0].name).to.equal('name a')
-                    expect(res.body[0].age).to.equal(11)
+                    expect(res.body[0].title).to.equal('note a')
+                    expect(res.body[0].content).to.equal('content a')
                     done()
                 })
         })
     })
 
-    describe("Test if can get user by id", () => {
-        it("Expect to return user by id", (done) => {
-            User.findOne({
+    describe("Test if can get note by id", () => {
+        it("Expect to return note by id", (done) => {
+            Note.findOne({
                 order: [
                     ['id', 'DESC']
                 ]
             }).then((data) => {
                 chai.request(app)
-                    .get(`/api/users/${data.id}`)
+                    .get(`/api/notes/${data.id}`)
                     .end((err, res) => {
-                        User.findOne({
+                        Note.findOne({
                             where: {
                                 id: res.body.id
                             }
                         }).then((data) => {
                             expect(res).to.have.status(200)
                             expect(res.body.id).to.equal(data.id)
-                            expect(res.body.TempUserId).to.equal(data.TempUserId)
-                            expect(res.body.name).to.equal(data.name)
-                            expect(res.body.age).to.equal(data.age)
+                            expect(res.body.TempNoteId).to.equal(data.TempNoteId)
+                            expect(res.body.title).to.equal(data.title)
+                            expect(res.body.content).to.equal(data.content)
                             done()
                         }).catch((err) => {
                             res.json(err)
@@ -71,26 +83,26 @@ describe.only("Test for users", () => {
         })
     })
 
-    describe("Test if can add a user", () => {
-        it("Expect to return user that has been created", (done) => {
+    describe("Test if can add a note", () => {
+        it("Expect to return note that has been created", (done) => {
             chai.request(app)
-                .post('/api/users')
+                .post('/api/notes')
                 .send({
-                    TempUserId: Date.now().toString(),
-                    name: 'name test',
-                    age: 20
+                    TempNoteId: Date.now().toString(),
+                    title: 'title test',
+                    content: 'content test'
                 })
                 .end((err, res) => {
-                    User.findOne({
+                    Note.findOne({
                         where: {
                             id: res.body.id
                         }
                     }).then((data) => {
                         expect(res).to.have.status(200)
                         expect(res.body.id).to.equal(data.id)
-                        expect(res.body.TempUserId).to.equal(data.TempUserId)
-                        expect(res.body.name).to.equal(data.name)
-                        expect(res.body.age).to.equal(data.age)
+                        expect(res.body.TempNoteId).to.equal(data.TempNoteId)
+                        expect(res.body.title).to.equal(data.title)
+                        expect(res.body.content).to.equal(data.content)
                         done()
                     }).catch((err) => {
                         res.json(err)
@@ -99,32 +111,32 @@ describe.only("Test for users", () => {
         })
     })
 
-    describe("Test if can update a user", () => {
+    describe("Test if can update a note", () => {
         it("Expect to return user that has been updated", (done) => {
             chai.request(app)
-            User.findOne({
+            Note.findOne({
                 order: [
                     ['id', 'DESC']
                 ]
             }).then((data) => {
                 chai.request(app)
-                    .put(`/api/users`)
+                    .put(`/api/notes`)
                     .send({
                         id: data.id,
-                        name: 'user update',
-                        age: 100
+                        title: 'title update',
+                        content: 'content update'
                     })
                     .end((err, res) => {
-                        User.findOne({
+                        Note.findOne({
                             where: {
                                 id: res.body.id
                             }
                         }).then((data) => {
                             expect(res).to.have.status(200)
                             expect(res.body.id).to.equal(data.id)
-                            expect(res.body.TempUserId).to.equal(data.TempUserId)
-                            expect(res.body.name).to.equal(data.name)
-                            expect(res.body.age).to.equal(data.age)
+                            expect(res.body.TempNoteId).to.equal(data.TempNoteId)
+                            expect(res.body.title).to.equal(data.title)
+                            expect(res.body.content).to.equal(data.content)
                             done()
                         }).catch((err) => {
                             res.json(err)
@@ -137,7 +149,7 @@ describe.only("Test for users", () => {
     describe("Test if can delete a user", () => {
 
         it("Expect to return true if delete user working", (done) => {
-            User.findOne({
+            Note.findOne({
                 order: [
                     ['id', 'DESC']
                 ]
@@ -145,9 +157,8 @@ describe.only("Test for users", () => {
                 chai.request(app)
                     .delete(`/api/users`)
                     .end((err, res) => {
-                    console.log(">>>>>>>>>>>>>>>>>", res.status)
-                    console.log(">>>>>>>>>>>>>>>>>", res)
                         expect(res).to.have.status(200)
+                        // expect(res.body.name).to.equal(1)
                         done()
                     })
             }).catch((err) => {
