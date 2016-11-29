@@ -35,6 +35,7 @@ module.exports = {
     getData: (req, res) => {
         User
             .findOne({ _id: req.params.id })
+            .populate('notes')
             .exec((err, data) => {
                 if (err) res.status(400).json({ 'error': `Error: ${err}` })
                 else if (!data) res.status(404).json({ 'message': 'Failed to get' })
@@ -49,7 +50,7 @@ module.exports = {
             .exec((err, data) => {
                 if (err) res.status(400).json({ 'error': `Error: ${err}` })
                 else if (!data) res.status(404).json({ 'message': 'No data found' })
-                res.status(200).json({ 'message': `Data ${req.params.id} has been deleted` })
+                res.status(200).json({ 'message': `Data has been deleted` })
             })
     },
 

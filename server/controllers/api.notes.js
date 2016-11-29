@@ -32,7 +32,7 @@ module.exports = {
                     .findOneAndUpdate({ _id: req.body.userid }, { $push: { notes: data._id } }, { new: true }, (err, data2) => {
                         if (err) res.status(400).json({ 'error': `Error: ${err}` })
                         else if (!data2) res.status(304).json({ 'message': 'Failed to update user' })
-                        res.status(200).json({ 'message': 'Add data successful', data2 })
+                        res.status(200).json({ 'message': 'Add data successful', data })
                     })
             })
     },
@@ -56,7 +56,7 @@ module.exports = {
         }, (err, data) => {
             if (err) res.status(400).json({ 'error': `Error: ${err}` })
             else if (!data) res.status(404).json({ 'message': 'No data found' })
-            res.status(200).json({ 'message': `Data ${req.params.id} has been deleted` })
+            res.status(200).json({ 'message': `Data has been deleted` })
         })
     },
 
@@ -66,8 +66,7 @@ module.exports = {
             _id: req.params.id
         }, {
             title: req.body.title,
-            content: req.body.content,
-            user: req.body.userid
+            content: req.body.content
         }, {
             new: true
         }, (err, data) => {
