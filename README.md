@@ -14,6 +14,8 @@
 * mocha
 * chai
 * chai-http
+* babel-polyfill
+* babel-core
 
 ## API End Point
 Default development URL & port : http://localhost:3000
@@ -53,6 +55,10 @@ Database name : db_personal_note
   },
   "age"        : {
     "type"      : Number,
+    "required"  : true,
+  },
+  "email"        : {
+    "type"      : String,
     "required"  : true,
   },
   "noteId"        : [{

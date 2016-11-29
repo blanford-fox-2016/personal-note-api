@@ -1,0 +1,37 @@
+{
+  "name": "personal-note-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "babel-watch --watch views *.js ",
+    "test": "mocha --compilers js:babel-core/register --timeout 10000"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/blanford-fox-2016/personal-note-api/tree/kenduigraha"
+  },
+  "author": "Ken Duigraha Putra <kenduigraha@yahoo.com>",
+  "license": "MIT",
+  "dependencies": {
+    "babel-polyfill": "^6.16.0",
+    "body-parser": "^1.15.2",
+    "chai": "^3.5.0",
+    "chai-http": "^3.0.0",
+    "cors": "^2.8.1",
+    "dotenv": "^2.0.0",
+    "express": "^4.14.0",
+    "mongoose": "^4.7.0",
+    "morgan": "^1.7.0"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.18.2",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-watch": "^2.0.3",
+    "mocha": "^3.2.0"
+  }
+}
