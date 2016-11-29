@@ -24,6 +24,8 @@ let UsersSchema = new Schema ({
     "type"      : Schema.Types.ObjectId,
     "ref"       : "Notes",
   }]
+},{
+  timestamps: true
 })
 
 export default mongoose.model('Users', UsersSchema)
