@@ -18,7 +18,6 @@ let getUserById = (req, res) => {
   // .populate('noteId')
   // .exec()
   .then((data_User) => {
-    console.log(data_User);
     res.json(data_User)
   })
   .catch((err) => {
@@ -47,6 +46,26 @@ let addNewUser = (req, res) => {
   })
 }
 
+let editUser = (req, res) => {
+  User
+    .findOneAndUpdate({
+      id: req.body.id
+    },{
+      name: req.body.name,
+      age: req.body.age,
+      email: req.body.email
+    },{
+      new: true
+    })
+    .then((edited_user) => {
+      res.json(edited_user)
+    })
+    .catch((err) => {
+      res.json(err)
+      console.log(err);
+    })
+}
+
 let deleteAllUsers = (req, res) => {
   User.remove()
     .then((deleted_all) => {
@@ -58,4 +77,4 @@ let deleteAllUsers = (req, res) => {
     })
 }
 
-export { getAllUsers, getUserById, addNewUser, deleteAllUsers }
+export { getAllUsers, getUserById, addNewUser, editUser, deleteAllUsers }

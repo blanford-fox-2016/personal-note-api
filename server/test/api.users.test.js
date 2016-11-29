@@ -90,3 +90,34 @@ describe('Get one user by id', () => {
       })
   })
 })
+
+describe('Edit one user by id', () => {
+  it('should edit one user by id(index = 0)', (done) => {
+    chai.request(URL)
+      .get('api/users/')
+      .end((err, res) => {
+        chai.request(URL)
+          .put('api/users/')
+          .send({
+            "id": res.body[0].id,
+            "name": "new edit from testing",
+            "age": 999,
+            "email": "edit_testing@testing.com"
+          })
+          .end((err, respond) => {
+            respond.should.have.status(200)
+            respond.should.be.json
+            expect(respond.body).to.be.an('object');
+
+            expect(respond.body).to.have.ownProperty('name')
+            expect(respond.body).to.have.ownProperty('age')
+            expect(respond.body).to.have.ownProperty('email')
+
+            respond.body.name.should.equal("new edit from testing")
+            respond.body.age.should.equal(999)
+            respond.body.email.should.equal("edit_testing@testing.com")
+            done()
+          })
+      })
+  })
+})
