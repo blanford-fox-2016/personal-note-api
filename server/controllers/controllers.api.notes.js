@@ -6,8 +6,8 @@ let getNoteById = (req, res) => {
     .findOne({
       id: req.params.id
     })
+    .populate('userId')
     .then((get_one_note) => {
-      console.log(get_one_note);
       res.json(get_one_note)
     })
     .catch((err) => {
@@ -50,7 +50,63 @@ let addNewNote = (req, res) => {
   })
 }
 
+let editNote = (req, res) => {
+  Note
+    .findOneAndUpdate({
+      id: req.body.id
+    },{
+      id: req.body.id,
+      title: req.body.title,
+      content: req.body.content
+    },{
+      new: true
+    })
+    .then((success_update) => {
+      res.json(success_update)
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(err)
+    })
+}
+
+let deleteNote = (req, res) => {
+  Note
+    .findOneAndRemove({
+      id: req.body.id
+    })
+    .then((deleted_note) => {
+      // console.log(deleted_note);
+      User
+        .findOneAndUpdate({
+          id: deleted_note.userId
+        }, {
+          $pull: {
+            noteId: deleted_note.id
+          }
+        },{
+          new: true
+        })
+        .then((user_note_deleted) => {
+          // console.log(user_note_deleted);
+          console.log(`noteId in ${user_note_deleted.name} has deleted`);
+
+          res.json(deleted_note)
+        })
+        .catch((err) => {
+          console.log(err);
+          res.json(err)
+        })
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(err)
+    })
+}
+
 export {
   getNoteById,
-  addNewNote
+  addNewNote,
+  editNote,
+  deleteNote
 }

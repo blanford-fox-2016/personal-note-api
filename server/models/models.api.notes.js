@@ -16,10 +16,10 @@ let NotesSchema = new Schema ({
     "type"      : String,
     "required"  : true,
   },
-  "userId"      : [{
+  "userId"      : {
     "type"      : Schema.Types.ObjectId,
     "ref"       : "Users",
-  }]
+  }
 },{
   "timestamps"  : true
 })

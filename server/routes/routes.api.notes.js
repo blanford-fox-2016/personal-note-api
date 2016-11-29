@@ -1,16 +1,17 @@
 import express from 'express'
 import {
   getNoteById,
-  addNewNote
+  addNewNote,
+  editNote,
+  deleteNote
 } from '../controllers/controllers.api.notes'
 
 const app = express()
 const router = express.Router()
 
-router.get('/', getNoteById)
+router.get('/:id', getNoteById)
 router.post('/', addNewNote)
-// router.put('/', editUser)
-// router.delete('/', deleteUser)
-// router.delete('/', deleteAllUsers)
+router.put('/', editNote)
+router.delete('/', deleteNote)
 
 export default router

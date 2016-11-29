@@ -1,22 +1,22 @@
 import User from '../models/models.api.users'
 
 let getAllUsers = (req, res) => {
-  User.find((err, all_Users) => {
-    if(err){
-      res.json(err)
-      console.log(err);
-    }else{
+  User.find()
+    .populate('noteId')
+    .then((all_Users) => {
       res.json(all_Users)
-    }
-  })
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(err)
+    })
 }
 
 let getUserById = (req, res) => {
   User.findOne({
     id: req.params.id
   })
-  // .populate('noteId')
-  // .exec()
+  .populate('noteId')
   .then((data_User) => {
     res.json(data_User)
   })
@@ -85,8 +85,8 @@ let deleteAllUsers = (req, res) => {
       res.json(deleted_all)
     })
     .catch((err) => {
-      res.json(err)
       console.log(err);
+      res.json(err)
     })
 }
 
