@@ -7,7 +7,7 @@ const expect = chai.expect
 const chaiHttp = require('chai-http')
 chai.use(chaiHttp)
 
-describe.only("Test for notes", () => {
+describe("Test for notes", () => {
 
     before((done) => {
         chai.request(app)

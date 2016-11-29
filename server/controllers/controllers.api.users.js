@@ -1,5 +1,6 @@
 const models = require('../models')
 const User = models.User
+const Note = models.Note
 
 module.exports = {
     seedUser: (req, res) => {
@@ -27,7 +28,13 @@ module.exports = {
     },
 
     getAllUsers: (req, res) => {
-        User.findAll().then((data) => {
+        User.findAll({
+            include: [
+                {
+                    model: Note
+                }
+            ]
+        }).then((data) => {
             res.json(data)
         }).catch((err) => {
             res.json(err)
@@ -36,6 +43,12 @@ module.exports = {
 
     getUserById: (req, res) => {
         User.findOne({
+            include: [
+                {
+                    model: Note
+                }
+            ]
+        }, {
             where: {
                 id: req.params.id
             }
