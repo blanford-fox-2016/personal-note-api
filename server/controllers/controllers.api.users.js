@@ -65,7 +65,15 @@ module.exports = {
             name: 'user create',
             age: 99
         }).then((data) => {
-            res.json(data)
+            User.findOne({
+                include: [
+                    {
+                        model: Note
+                    }
+                ]
+            }).then((data) => {
+                res.json(data)
+            })
         }).catch((err) => {
             res.json(err)
         })
@@ -81,6 +89,12 @@ module.exports = {
             }
         }).then(() => {
             User.findOne({
+                include: [
+                    {
+                        model: Note
+                    }
+                ]
+            }, {
                 where: {
                     id: req.body.id
                 }

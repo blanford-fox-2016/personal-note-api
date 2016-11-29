@@ -7,7 +7,7 @@ const expect = chai.expect
 const chaiHttp = require('chai-http')
 chai.use(chaiHttp)
 
-describe("Test for users", () => {
+describe.only("Test for users", () => {
 
     before((done) => {
         chai.request(app)
@@ -35,6 +35,13 @@ describe("Test for users", () => {
                 .end((err, res) => {
                     expect(res.body).that.is.an('array')
                     expect(res).to.have.status(200)
+                    expect(res.body[0]).to.haveOwnProperty('id')
+                    expect(res.body[0]).to.haveOwnProperty('TempUserId')
+                    expect(res.body[0]).to.haveOwnProperty('name')
+                    expect(res.body[0]).to.haveOwnProperty('age')
+                    expect(res.body[0]).to.haveOwnProperty('createdAt')
+                    expect(res.body[0]).to.haveOwnProperty('updatedAt')
+                    expect(res.body[0]).to.haveOwnProperty('Notes')
                     expect(res.body[0].name).to.equal('name a')
                     expect(res.body[0].age).to.equal(11)
                     done()
@@ -58,6 +65,13 @@ describe("Test for users", () => {
                             }
                         }).then((data) => {
                             expect(res).to.have.status(200)
+                            expect(res.body).to.haveOwnProperty('id')
+                            expect(res.body).to.haveOwnProperty('TempUserId')
+                            expect(res.body).to.haveOwnProperty('name')
+                            expect(res.body).to.haveOwnProperty('age')
+                            expect(res.body).to.haveOwnProperty('createdAt')
+                            expect(res.body).to.haveOwnProperty('updatedAt')
+                            expect(res.body).to.haveOwnProperty('Notes')
                             expect(res.body.id).to.equal(data.id)
                             expect(res.body.TempUserId).to.equal(data.TempUserId)
                             expect(res.body.name).to.equal(data.name)
@@ -87,6 +101,13 @@ describe("Test for users", () => {
                         }
                     }).then((data) => {
                         expect(res).to.have.status(200)
+                        expect(res.body).to.haveOwnProperty('id')
+                        expect(res.body).to.haveOwnProperty('TempUserId')
+                        expect(res.body).to.haveOwnProperty('name')
+                        expect(res.body).to.haveOwnProperty('age')
+                        expect(res.body).to.haveOwnProperty('createdAt')
+                        expect(res.body).to.haveOwnProperty('updatedAt')
+                        expect(res.body).to.haveOwnProperty('Notes')
                         expect(res.body.id).to.equal(data.id)
                         expect(res.body.TempUserId).to.equal(data.TempUserId)
                         expect(res.body.name).to.equal(data.name)
@@ -121,6 +142,13 @@ describe("Test for users", () => {
                             }
                         }).then((data) => {
                             expect(res).to.have.status(200)
+                            expect(res.body).to.haveOwnProperty('id')
+                            expect(res.body).to.haveOwnProperty('TempUserId')
+                            expect(res.body).to.haveOwnProperty('name')
+                            expect(res.body).to.haveOwnProperty('age')
+                            expect(res.body).to.haveOwnProperty('createdAt')
+                            expect(res.body).to.haveOwnProperty('updatedAt')
+                            expect(res.body).to.haveOwnProperty('Notes')
                             expect(res.body.id).to.equal(data.id)
                             expect(res.body.TempUserId).to.equal(data.TempUserId)
                             expect(res.body.name).to.equal(data.name)
@@ -145,8 +173,6 @@ describe("Test for users", () => {
                 chai.request(app)
                     .delete(`/api/users`)
                     .end((err, res) => {
-                    console.log(">>>>>>>>>>>>>>>>>", res.status)
-                    console.log(">>>>>>>>>>>>>>>>>", res)
                         expect(res).to.have.status(200)
                         done()
                     })
