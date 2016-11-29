@@ -1,3 +1,8 @@
-/**
- * Created by dharmadi93 on 11/29/16.
- */
+const models = require('../models')
+const User = models.User
+
+module.exports = {
+    seedUser: (req, res) => {
+
+    }
+}
