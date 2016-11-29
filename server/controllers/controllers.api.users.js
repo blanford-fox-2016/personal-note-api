@@ -7,14 +7,6 @@ module.exports = {
             TempUserId: Date.now().toString(),
             name: 'name a',
             age: 11
-        }, {
-            TempUserId: Date.now().toString(),
-            name: 'name b',
-            age: 22
-        }, {
-            TempUserId: Date.now().toString(),
-            name: 'name c',
-            age: 22
         }).then((data) => {
             res.json(data)
         }).catch((err) => {
@@ -23,7 +15,11 @@ module.exports = {
     },
 
     deleteAllUsers: (req, res) => {
-        User.destroy().then((data) => {
+        User.destroy({
+            where: {
+
+            }
+        }).then((data) => {
             res.json(data)
         }).catch((err) => {
             res.json(err)
@@ -41,7 +37,7 @@ module.exports = {
     getUserById: (req, res) => {
         User.findOne({
             where: {
-                id: req.body.id
+                id: req.params.id
             }
         }).then((data) => {
             res.json(data)
