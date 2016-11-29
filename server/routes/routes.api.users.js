@@ -4,6 +4,7 @@ import {
   getUserById,
   addNewUser,
   editUser,
+  deleteUser,
   deleteAllUsers
 } from '../controllers/controllers.api.users'
 
@@ -14,6 +15,7 @@ router.get('/', getAllUsers)
 router.get('/:id', getUserById)
 router.post('/', addNewUser)
 router.put('/', editUser)
+router.delete('/', deleteUser)
 router.delete('/', deleteAllUsers)
 
 export default router

@@ -66,6 +66,20 @@ let editUser = (req, res) => {
     })
 }
 
+let deleteUser = (req, res) => {
+  User
+    .findOneAndRemove({
+      id: req.body.id
+    })
+    .then((deleted_User) => {
+      res.json(deleted_User)
+    })
+    .catch((err) => {
+      console.log(err);
+      res.json(err)
+    })
+}
+
 let deleteAllUsers = (req, res) => {
   User.remove()
     .then((deleted_all) => {
@@ -77,4 +91,11 @@ let deleteAllUsers = (req, res) => {
     })
 }
 
-export { getAllUsers, getUserById, addNewUser, editUser, deleteAllUsers }
+export {
+  getAllUsers,
+  getUserById,
+  addNewUser,
+  editUser,
+  deleteUser,
+  deleteAllUsers
+}
