@@ -7,7 +7,7 @@ const expect = chai.expect
 const chaiHttp = require('chai-http')
 chai.use(chaiHttp)
 
-describe("Test for notes", () => {
+describe.only("Test for notes", () => {
 
     before((done) => {
         chai.request(app)
@@ -155,10 +155,9 @@ describe("Test for notes", () => {
                 ]
             }).then((data) => {
                 chai.request(app)
-                    .delete(`/api/users`)
+                    .delete(`/api/notes`)
                     .end((err, res) => {
                         expect(res).to.have.status(200)
-                        // expect(res.body.name).to.equal(1)
                         done()
                     })
             }).catch((err) => {
