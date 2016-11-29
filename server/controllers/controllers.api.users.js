@@ -42,7 +42,6 @@ let addNewUser = (req, res) => {
     }else{
       res.json(newUser)
     }
-
   })
 }
 
