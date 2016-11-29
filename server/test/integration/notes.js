@@ -11,12 +11,6 @@ describe.only("Test for notes", () => {
 
     before((done) => {
         chai.request(app)
-            .get('/api/users/seed')
-            .end((err, res) => {
-                console.log("User seeded")
-            })
-
-        chai.request(app)
             .get('/api/notes/seed')
             .end((err, res) => {
                 console.log("Notes seeded")

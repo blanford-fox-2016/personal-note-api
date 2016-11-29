@@ -11,24 +11,12 @@ module.exports = {
         }).then((data) => {
             Note.create({
                 TempNoteId: Date.now().toString(),
-                title: 'title a',
+                title: 'note a',
                 content: 'content a',
                 UserId: data.id
             }).then((data) => {
                 res.json(data)
             })
-        }).catch((err) => {
-            res.json(err)
-        })
-    },
-
-    deleteAllUsers: (req, res) => {
-        User.destroy({
-            where: {
-
-            }
-        }).then((data) => {
-            res.json(data)
         }).catch((err) => {
             res.json(err)
         })
@@ -40,14 +28,26 @@ module.exports = {
 
             }
         }).then((data) => {
-            res.json(data)
+            User.destroy({
+                where: {
+
+                }
+            }).then((data) => {
+                res.json(data)
+            })
         }).catch((err) => {
             res.json(err)
         })
     },
 
     getAllNotes: (req, res) => {
-        Note.findAll().then((data) => {
+        Note.findAll({
+            include: [
+                {
+                    model: User
+                }
+            ]
+        }).then((data) => {
             res.json(data)
         }).catch((err) => {
             res.json(err)
@@ -56,6 +56,12 @@ module.exports = {
 
     getNoteById: (req, res) => {
         Note.findOne({
+            include: [
+                {
+                    model: User
+                }
+            ]
+        }, {
             where: {
                 id: req.params.id
             }
