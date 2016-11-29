@@ -11,9 +11,12 @@
 * cors
 * babel-cli
 * babel-preset-es2015
+* mocha
+* chai
+* chai-http
 
 ## API End Point
-Defautl development URL & port : http://localhost:3000
+Default development URL & port : http://localhost:3000
 
 ### Users
 
