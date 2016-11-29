@@ -53,18 +53,20 @@ Database name : db_personal_note
     "type"      : String,
     "required"  : true,
   },
-  "age"        : {
+  "age"         : {
     "type"      : Number,
     "required"  : true,
   },
-  "email"        : {
+  "email"       : {
     "type"      : String,
     "required"  : true,
   },
-  "noteId"        : [{
+  "noteId"      : [{
     "type"      : Schema.Types.ObjectId,
-    "ref"  : "Notes",
+    "ref"       : "Notes",
   }]
+},{
+  "timestamps"  : true
 }
 ```
 ### Notes
@@ -75,18 +77,20 @@ Database name : db_personal_note
     "required"  : true,
     "unique"    : true
   },
-  "title"        : {
+  "title"       : {
     "type"      : String,
     "required"  : true,
   },
-  "content"        : {
+  "content"     : {
     "type"      : String,
     "required"  : true,
   },
-  "userId"        : [{
+  "userId"      : [{
     "type"      : Schema.Types.ObjectId,
-    "ref"  : "Users",
+    "ref"       : "Users",
   }]
+},{
+  "timestamps"  : true
 }
 ```
 
