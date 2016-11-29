@@ -71,6 +71,10 @@ module.exports = {
                         model: Note
                     }
                 ]
+            }, {
+                where: {
+                    TempUserId: data.TempUserId
+                }
             }).then((data) => {
                 res.json(data)
             })

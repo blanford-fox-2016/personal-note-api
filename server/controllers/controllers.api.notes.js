@@ -78,7 +78,19 @@ module.exports = {
             title: 'title create',
             content: 'content create'
         }).then((data) => {
-            res.json(data)
+            Note.findOne({
+                include: [
+                    {
+                        model: User
+                    }
+                ]
+            }, {
+                where: {
+                    TempNoteId: data.TempNoteId
+                }
+            }).then((data) => {
+                res.json(data)
+            })
         }).catch((err) => {
             res.json(err)
         })
@@ -94,6 +106,12 @@ module.exports = {
             }
         }).then(() => {
             Note.findOne({
+                include: [
+                    {
+                        model: User
+                    }
+                ]
+            }, {
                 where: {
                     id: req.body.id
                 }
