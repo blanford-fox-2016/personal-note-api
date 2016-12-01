@@ -10,7 +10,7 @@ const Users = require('./models/Users');
 
 const routes = require('./routes/index');
 const auth = require('./routes/auth');
-// const apiData = require('./routes/apiData');
+const apiUser = require('./routes/apiUser');
 // const apiDataDate = require('./routes/apiDataDate');
 
 const passport = require('passport');
@@ -59,7 +59,7 @@ app.use(passport.session());
 
 app.use('/', routes);
 app.use('/auth', auth);
-// app.use('/api/data', apiData);
+app.use('/api/user', apiUser);
 // app.use('/api/datadate', apiDataDate);
 
 passport.serializeUser(Users.serializeUser());
