@@ -88,3 +88,21 @@ describe('edit user', function() {
       })
   })
 })
+describe('delete user', function(){
+  let username = 'tamatamvan123'
+  it('should delete user data and return status ok 1, n 1', function(done) {
+    chai.request('http://localhost:3000')
+      .get('/api/user/'+username)
+      .end(function (err, res) {
+        chai.request('http://localhost:3000')
+          .delete('/api/user/'+res.body._id)
+          .end(function (err, res){
+            res.should.be.json;
+            res.should.have.status(200);
+            res.body.ok.should.equal(1);
+            res.body.n.should.equal(1);
+            done();
+          })
+      })
+  })
+})
