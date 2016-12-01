@@ -49,3 +49,18 @@ describe('get single user by username', function() {
     })
   })
 })
+describe('user login', function() {
+  it('should authenticate user, save a session if username and password correct according to database', function(done) {
+    chai.request('http://localhost:3000')
+      .post('/api/user/login')
+      .send({
+        username: 'tamatamvan',
+        password: 'tamatamvan'
+      })
+      .end(function(err, res) {
+        res.should.be.json;
+        res.should.have.status(200);
+        done();
+      })
+  })
+})
