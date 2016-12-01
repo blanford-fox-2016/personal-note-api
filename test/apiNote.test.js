@@ -57,7 +57,7 @@ describe('find by slug, get the id, then update', function() {
       .end(function (err, res) {
         console.log(res.body._id);
         chai.request('http://localhost:3000')
-          .put('/api/article/'+res.body._id)
+          .put('/api/note/'+res.body._id)
           .send({
             title: 'First Note Edited',
             content: 'This is first note edited',
@@ -76,6 +76,26 @@ describe('find by slug, get the id, then update', function() {
             // res.body.n.should.equal(1);
             done();
           });
+      })
+  })
+})
+
+//delete single article by id
+describe('find by slug, get the id, then delete', function() {
+  let slug = 'first-note-edited';
+  it('should return status ok 1, n 1', function(done) {
+    chai.request('http://localhost:3000')
+      .get('/api/note/'+slug)
+      .end(function (err, res) {
+        chai.request('http://localhost:3000')
+          .delete('/api/note/'+res.body._id)
+          .end(function (err, res){
+            res.should.be.json;
+            res.should.have.status(200);
+            res.body.ok.should.equal(1);
+            res.body.n.should.equal(1);
+            done();
+          })
       })
   })
 })
