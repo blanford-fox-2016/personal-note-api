@@ -1,4 +1,4 @@
-const Notes = require('./models/Notes');
+const Users = require('./models/Users');
 
 let getAllUsers = (res, req, next) => {
 
