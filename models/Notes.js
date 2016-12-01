@@ -21,6 +21,6 @@ let notesSchema = new mongoose.Schema({
   }
 });
 
-let articles = mongoose.model('notes', notesSchema)
+let notes = mongoose.model('notes', notesSchema)
 
 module.exports = notes

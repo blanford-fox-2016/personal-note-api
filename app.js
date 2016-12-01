@@ -11,7 +11,7 @@ const Users = require('./models/Users');
 const routes = require('./routes/index');
 const auth = require('./routes/auth');
 const apiUser = require('./routes/apiUser');
-// const apiDataDate = require('./routes/apiDataDate');
+const apiNote = require('./routes/apiNote');
 
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
@@ -60,7 +60,7 @@ app.use(passport.session());
 app.use('/', routes);
 app.use('/auth', auth);
 app.use('/api/user', apiUser);
-// app.use('/api/datadate', apiDataDate);
+app.use('/api/note', apiNote);
 
 passport.serializeUser(Users.serializeUser());
 passport.deserializeUser(Users.deserializeUser());

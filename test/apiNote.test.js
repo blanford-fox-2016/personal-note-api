@@ -37,7 +37,7 @@ describe('get note list', function() {
 
 describe('get note by slug', function() {
   it('should return a single note according by title', function(done) {
-    chai.request('http://localhost:3000/')
+    chai.request('http://localhost:3000')
       .get('/api/note/first-note')
       .end(function(err, res){
         res.should.be.json;
