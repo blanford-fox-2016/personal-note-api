@@ -47,3 +47,35 @@ describe('get note by slug', function() {
       })
   })
 })
+
+//update single note by id
+describe('find by slug, get the id, then update', function() {
+  let slug = 'first-note';
+  it('should return status ok 1, nModified 1, modified 1', function(done) {
+    chai.request('http://localhost:3000')
+      .get('/api/note/'+slug)
+      .end(function (err, res) {
+        console.log(res.body._id);
+        chai.request('http://localhost:3000')
+          .put('/api/article/'+res.body._id)
+          .send({
+            title: 'First Note Edited',
+            content: 'This is first note edited',
+            author: 'tamatamvan',
+            slug: 'first-note-edited'
+          })
+          .end(function (err, res){
+            res.should.be.json;
+            res.should.have.status(200);
+            res.body.title.should.equal('First Note Edited');
+            res.body.content.should.equal('This is first note edited');
+            res.body.author.should.equal('tamatamvan');
+            res.body.slug.should.equal('first-note-edited');
+            // res.body.ok.should.equal(1);
+            // res.body.nModified.should.equal(1);
+            // res.body.n.should.equal(1);
+            done();
+          });
+      })
+  })
+})
