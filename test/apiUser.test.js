@@ -21,3 +21,16 @@ describe('register a new user', function() {
       })
   })
 })
+
+//Test script for get article lists
+describe('user list', function() {
+  it('should return the respond json which contains the list of users from database', function(done) {
+    chai.request('http://localhost:3000')
+      .get('/api/user')
+      .end(function (err, res) {
+        res.should.be.json;
+        res.should.have.status(200);
+        done();
+      })
+  })
+})
