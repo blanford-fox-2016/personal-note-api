@@ -100,6 +100,8 @@ describe("Test for users", () => {
                             id: res.body.id
                         }
                     }).then((data) => {
+                        // console.log("ini res body: ", res.body)
+                        // console.log("ini data: ", data.name)
                         expect(res).to.have.status(200)
                         expect(res.body).to.haveOwnProperty('id')
                         expect(res.body).to.haveOwnProperty('TempUserId')
@@ -107,7 +109,6 @@ describe("Test for users", () => {
                         expect(res.body).to.haveOwnProperty('age')
                         expect(res.body).to.haveOwnProperty('createdAt')
                         expect(res.body).to.haveOwnProperty('updatedAt')
-                        expect(res.body).to.haveOwnProperty('Notes')
                         expect(res.body.id).to.equal(data.id)
                         expect(res.body.TempUserId).to.equal(data.TempUserId)
                         expect(res.body.name).to.equal(data.name)

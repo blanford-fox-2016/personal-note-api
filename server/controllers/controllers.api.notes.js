@@ -46,6 +46,9 @@ module.exports = {
                 {
                     model: User
                 }
+            ],
+            order: [
+                ['updatedAt', 'DESC']
             ]
         }).then((data) => {
             res.json(data)
@@ -75,8 +78,9 @@ module.exports = {
     createNote: (req, res) => {
         Note.create({
             TempNoteId: Date.now().toString(),
-            title: 'title create',
-            content: 'content create'
+            title: req.body.title,
+            content: req.body.content,
+            UserId: req.body.UserId
         }).then((data) => {
             Note.findOne({
                 include: [
@@ -89,6 +93,7 @@ module.exports = {
                     TempNoteId: data.TempNoteId
                 }
             }).then((data) => {
+                // console.log(data)
                 res.json(data)
             })
         }).catch((err) => {

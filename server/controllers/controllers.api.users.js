@@ -1,3 +1,5 @@
+const jwt = require('jsonwebtoken')
+const decodeJwt = require('jwt-decode')
 const models = require('../models')
 const User = models.User
 const Note = models.Note
@@ -62,24 +64,25 @@ module.exports = {
     createUser: (req, res) => {
         User.create({
             TempUserId: Date.now().toString(),
-            name: 'user create',
-            age: 99
+            name: req.body.name,
+            age: req.body.age
         }).then((data) => {
             User.findOne({
-                include: [
-                    {
-                        model: Note
-                    }
-                ]
-            }, {
                 where: {
                     TempUserId: data.TempUserId
                 }
             }).then((data) => {
+                // console.log(data)
                 res.json(data)
+                // res.status(200).json({
+                //     token: jwt.sign({
+                //         id: data.id,
+                //         name: data.name
+                //     }, process.env.SESSION_SECRET)
+                // })
             })
         }).catch((err) => {
-            res.json(err)
+            // res.json(err)
         })
     },
 
@@ -120,5 +123,9 @@ module.exports = {
         }).catch((err) => {
             res.json(err)
         })
+    },
+
+    decodeUser: (req, res) => {
+        console.log(req.body)
     }
 }

@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -5,6 +7,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cors = require('cors')
+var session = require('express-session')
 
 // var routes = require('./routes/index');
 var users = require('./routes/routes.api.users');
@@ -23,6 +26,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(cors())
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    cookie: {
+        maxAge: 6000000
+    },
+    resave: false,
+    saveUninitialized: false
+}))
 app.use(express.static(path.join(__dirname, 'public')));
 
 // app.use('/', routes);
