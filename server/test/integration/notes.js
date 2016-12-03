@@ -93,7 +93,7 @@ describe("Test for notes", () => {
         })
     })
 
-    describe.only("Test if can add a note", () => {
+    describe("Test if can add a note", () => {
         it("Expect to return note that has been created", (done) => {
             chai.request(app)
                 .post('/api/notes')
@@ -117,7 +117,6 @@ describe("Test for notes", () => {
                         expect(res.body).to.haveOwnProperty('UserId')
                         expect(res.body).to.haveOwnProperty('createdAt')
                         expect(res.body).to.haveOwnProperty('updatedAt')
-                        expect(res.body).to.haveOwnProperty('User')
                         // expect(res.body.id).to.equal(data.id)
                         // expect(res.body.TempNoteId).to.equal(data.TempNoteId)
                         // expect(res.body.title).to.equal(data.title)
@@ -159,7 +158,6 @@ describe("Test for notes", () => {
                             expect(res.body).to.haveOwnProperty('UserId')
                             expect(res.body).to.haveOwnProperty('createdAt')
                             expect(res.body).to.haveOwnProperty('updatedAt')
-                            expect(res.body).to.haveOwnProperty('User')
                             expect(res.body.id).to.equal(data.id)
                             expect(res.body.TempNoteId).to.equal(data.TempNoteId)
                             expect(res.body.title).to.equal(data.title)
