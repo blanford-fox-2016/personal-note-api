@@ -77,23 +77,21 @@ module.exports = {
 
     createNote: (req, res) => {
         Note.create({
-            TempNoteId: Date.now().toString(),
+            TempNoteId: req.body.TempNoteId,
             title: req.body.title,
             content: req.body.content,
             UserId: req.body.UserId
         }).then((data) => {
+            console.log(data)
+            // res.json(data)
+            console.log("ini data 1 id: ", data.id)
+            console.log("ini data 1: ", data)
             Note.findOne({
-                include: [
-                    {
-                        model: User
-                    }
-                ]
-            }, {
                 where: {
-                    TempNoteId: data.TempNoteId
+                    TempNoteId: req.body.TempNoteId
                 }
             }).then((data) => {
-                // console.log(data)
+                console.log("data 2: ", data)
                 res.json(data)
             })
         }).catch((err) => {
@@ -107,16 +105,10 @@ module.exports = {
             content: req.body.content
         }, {
             where: {
-                id: req.body.id
+                TempNoteId: req.body.TempNoteId
             }
         }).then(() => {
             Note.findOne({
-                include: [
-                    {
-                        model: User
-                    }
-                ]
-            }, {
                 where: {
                     id: req.body.id
                 }
@@ -131,7 +123,7 @@ module.exports = {
     deleteNote: (req, res) => {
         Note.destroy({
             where: {
-                id: req.body.id
+                TempNoteId: req.body.TempNoteId
             }
         }).then((data) => {
             res.json(data)
