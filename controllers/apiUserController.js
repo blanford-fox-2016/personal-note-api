@@ -1,3 +1,4 @@
+'use strict'
 const Users = require('../models/Users');
 
 let getAllUsers = (req, res, next) => {

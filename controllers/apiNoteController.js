@@ -1,3 +1,4 @@
+'use strict'
 const Notes = require('../models/Notes');
 const slug = require('slug');
 
