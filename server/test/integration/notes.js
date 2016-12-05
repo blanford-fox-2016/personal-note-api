@@ -7,7 +7,7 @@ const expect = chai.expect
 const chaiHttp = require('chai-http')
 chai.use(chaiHttp)
 
-describe("Test for notes", () => {
+describe.only("Test for notes", () => {
 
     before((done) => {
         chai.request(app)
@@ -16,6 +16,16 @@ describe("Test for notes", () => {
                 console.log("Notes seeded")
                 done()
             })
+
+        // chai.request(app)
+        //     .post('/api/users/login')
+        //     .send({
+        //         name: 'name a'
+        //     })
+        //     .end((err, res) => {
+        //         console.log("User login: ", res.body)
+        //         done()
+        //     })
     })
 
     after((done) => {
@@ -33,12 +43,27 @@ describe("Test for notes", () => {
             })
     })
 
-    describe("Test if can get all notes", () => {
+    describe.only("Login User", () => {
+        it("Expect to return session name that user has been login", (done) => {
+            chai.request(app)
+                .post('/api/users/login')
+                .send({
+                    name: 'name a'
+                })
+                .end((err, res) => {
+                console.log("ini session: ", res.body.session)
+                    done()
+                })
+        })
+    })
+
+    describe.only("Test if can get all notes", () => {
         it("Expect to return all list of notes", (done) => {
 
             chai.request(app)
                 .get('/api/notes')
                 .end((err, res) => {
+                console.log(res.body)
                     expect(res.body).that.is.an('array')
                     expect(res).to.have.status(200)
                     expect(res.body[0]).to.haveOwnProperty('id')

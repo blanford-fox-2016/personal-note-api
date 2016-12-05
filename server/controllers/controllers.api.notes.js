@@ -1,6 +1,7 @@
 const models = require('../models')
 const User = models.User
 const Note = models.Note
+const decode = require('jwt-decode')
 
 module.exports = {
     seedUserAndNote: (req, res) => {
@@ -41,6 +42,8 @@ module.exports = {
     },
 
     getAllNotes: (req, res) => {
+        console.log("ini header: ", decode(req.get("personalNoteToken")))
+        const UserToken = decode(req.get("personalNoteToken"))
         Note.findAll({
             include: [
                 {
@@ -49,7 +52,10 @@ module.exports = {
             ],
             order: [
                 ['updatedAt', 'DESC']
-            ]
+            ],
+            where: {
+                UserId: UserToken.id
+            }
         }).then((data) => {
             res.json(data)
         }).catch((err) => {
@@ -82,16 +88,16 @@ module.exports = {
             content: req.body.content,
             UserId: req.body.UserId
         }).then((data) => {
-            console.log(data)
+            // console.log(data)
             // res.json(data)
-            console.log("ini data 1 id: ", data.id)
-            console.log("ini data 1: ", data)
+            // console.log("ini data 1 id: ", data.id)
+            // console.log("ini data 1: ", data)
             Note.findOne({
                 where: {
                     TempNoteId: req.body.TempNoteId
                 }
             }).then((data) => {
-                console.log("data 2: ", data)
+                // console.log("data 2: ", data)
                 res.json(data)
             })
         }).catch((err) => {
@@ -130,5 +136,23 @@ module.exports = {
         }).catch((err) => {
             res.json(err)
         })
+    },
+
+    isAuthenticateToken: (req, res, next) => {
+        const UserToken = decode(req.get("personalNoteToken"))
+        if (req.get("personalNoteToken")) {
+            User.findOne({
+                where: {
+                    id: UserToken.id
+                }
+            }).then((data) => {
+                return next()
+            }).catch((err) => {
+                res.json(err)
+            })
+        }
+        else {
+            res.json('not login');
+        }
     }
 }

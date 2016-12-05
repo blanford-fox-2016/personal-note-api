@@ -30,6 +30,9 @@ module.exports = {
     },
 
     getAllUsers: (req, res) => {
+        console.log("session: ", req.session)
+        console.log("session id: ", req.session.id)
+        console.log("session name: ", req.session.name)
         User.findAll({
             include: [
                 {
@@ -73,13 +76,17 @@ module.exports = {
                 }
             }).then((data) => {
                 // console.log(data)
-                res.json(data)
-                // res.status(200).json({
-                //     token: jwt.sign({
-                //         id: data.id,
-                //         name: data.name
-                //     }, process.env.SESSION_SECRET)
-                // })
+                let user = {
+                    id: data.id,
+                    name: data.name
+                }
+                // res.json(JSON.stringify(user))
+                res.status(200).json({
+                    token: jwt.sign({
+                        id: data.id,
+                        name: data.name
+                    }, process.env.SESSION_SECRET)
+                })
             })
         }).catch((err) => {
             // res.json(err)
@@ -127,5 +134,39 @@ module.exports = {
 
     decodeUser: (req, res) => {
         console.log(req.body)
+    },
+
+    loginUser: (req, res) => {
+        console.log(req.body)
+        User.findOne({
+            where: {
+                name: req.body.name
+            }
+        }).then((data) => {
+            res.status(200).json({
+                token: jwt.sign({
+                    id: data.id,
+                    name: data.name
+                }, process.env.SESSION_SECRET)
+            })
+            // if(data.name) {
+            //     console.log(req.session);
+            //     req.session.id = data.id
+            //     req.session.name = data.name
+            // }
+            // res.json({
+            //     data: data,
+            //     session: req.session
+            // })
+        }).catch((err) => {
+            res.json(err)
+        })
+    },
+
+    isAuthenticate: (req, res, next) => {
+        if (req.session.name)
+            return next();
+
+        res.json('not login');
     }
 }
