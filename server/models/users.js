@@ -1,10 +1,12 @@
 const mongoose = require('mongoose'),
     Schema = mongoose.Schema,
+    passportLocalMonggose = require('passport-local-mongoose'),
     Note = require('./notes')
 
 const User = new Schema({
-    name: String,
-    age: Number,
+    username: String,
+    password: String,
+    avatar: String,
    	notes: [{
    		type: Schema.Types.ObjectId,
         ref: 'Note'
@@ -12,5 +14,7 @@ const User = new Schema({
 }, {
     timestamps: true
 })
+
+User.plugin(passportLocalMonggose)
 
 module.exports = mongoose.model('User', User)

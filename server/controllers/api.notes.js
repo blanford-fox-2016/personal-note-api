@@ -12,9 +12,9 @@ module.exports = {
             .find({})
             .populate('user')
             .exec((err, datas) => {
-                if (err) res.status(400).json({ 'error': `Error: ${err}` })
-                else if (!datas) res.status(404).json({ 'message': 'Failed to get all' })
-                res.status(200).json(datas)
+                if (err) res.json({ 'error': `Error: ${err}` })
+                else if (!datas) res.json({ 'message': 'Failed to get all' })
+                res.json(datas)
             })
     },
 
@@ -25,16 +25,17 @@ module.exports = {
             content: req.body.content,
             user: req.body.userid
         }
-
-        Note
-            .create(note, (err, data) => {
-                User
-                    .findOneAndUpdate({ _id: req.body.userid }, { $push: { notes: data._id } }, { new: true }, (err, data2) => {
-                        if (err) res.status(400).json({ 'error': `Error: ${err}` })
-                        else if (!data2) res.status(304).json({ 'message': 'Failed to update user' })
-                        res.status(200).json({ 'message': 'Add data successful', data })
-                    })
+        Note.create(note, (err, data) => {
+            User.findOneAndUpdate({ _id: req.body.userid }, { $push: { notes: data._id } }, { new: true }, (err, data2) => {
+                if (err) {
+                    res.json({ 'error': `Error: ${err}` })
+                } else if (!data2) {
+                    res.json({ 'message': 'Failed to update user' })
+                } else {
+                    res.status(200).json({ 'message': 'Add data successful', data })
+                }
             })
+        })
     },
 
     //get one
@@ -43,8 +44,8 @@ module.exports = {
             .findOne({ _id: req.params.id })
             .populate('user')
             .exec((err, data) => {
-                if (err) res.status(400).json({ 'error': `Error: ${err}` })
-                else if (!data) res.status(404).json({ 'message': 'Failed to get' })
+                if (err) res.json({ 'error': `Error: ${err}` })
+                else if (!data) res.json({ 'message': 'Failed to get' })
                 res.status(200).json(data)
             })
     },
@@ -54,8 +55,8 @@ module.exports = {
         Note.findOneAndRemove({
             _id: req.params.id
         }, (err, data) => {
-            if (err) res.status(400).json({ 'error': `Error: ${err}` })
-            else if (!data) res.status(404).json({ 'message': 'No data found' })
+            if (err) res.json({ 'error': `Error: ${err}` })
+            else if (!data) res.json({ 'message': 'No data found' })
             res.status(200).json({ 'message': `Data has been deleted` })
         })
     },
@@ -70,8 +71,8 @@ module.exports = {
         }, {
             new: true
         }, (err, data) => {
-            if (err) res.status(400).json({ 'error': `Error: ${err}` })
-            else if (!data) res.status(404).json({ 'message': 'Failed to update' })
+            if (err) res.json({ 'error': `Error: ${err}` })
+            else if (!data) res.json({ 'message': 'Failed to update' })
             res.status(200).json({ 'message': 'Edit data successful', data })
         })
     }
