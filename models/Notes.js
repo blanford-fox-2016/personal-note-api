@@ -19,6 +19,8 @@ let notesSchema = new mongoose.Schema({
     unique: true,
     required: true
   }
+}, {
+  timestamps: true
 });
 
 let notes = mongoose.model('notes', notesSchema)
