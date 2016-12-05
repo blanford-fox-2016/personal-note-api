@@ -3,13 +3,12 @@ var router = express.Router();
 var userControllers = require('../controllers/controllers.api.users')
 
 router.get('/seed', userControllers.seedUser)
-router.get('/', userControllers.getAllUsers)
-router.get('/:id', userControllers.getUserById)
-router.get('/decode', userControllers.deleteUser)
+router.get('/', userControllers.isAuthenticateToken, userControllers.getAllUsers)
+router.get('/:id', userControllers.isAuthenticateToken, userControllers.getUserById)
 router.post('/', userControllers.createUser)
 router.post('/login', userControllers.loginUser)
-router.put('/', userControllers.updateUser)
+router.put('/', userControllers.isAuthenticateToken, userControllers.updateUser)
 router.delete('/all', userControllers.deleteAllUsers)
-router.delete('/', userControllers.deleteUser)
+router.delete('/', userControllers.isAuthenticateToken, userControllers.deleteUser)
 
 module.exports = router;

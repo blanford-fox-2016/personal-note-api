@@ -146,7 +146,7 @@ module.exports = {
                     id: UserToken.id
                 }
             }).then((data) => {
-                return next()
+                if (data) return next()
             }).catch((err) => {
                 res.json(err)
             })

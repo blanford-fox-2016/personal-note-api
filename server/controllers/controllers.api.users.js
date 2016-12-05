@@ -3,6 +3,7 @@ const decodeJwt = require('jwt-decode')
 const models = require('../models')
 const User = models.User
 const Note = models.Note
+const decode = require('jwt-decode')
 
 module.exports = {
     seedUser: (req, res) => {
@@ -30,9 +31,6 @@ module.exports = {
     },
 
     getAllUsers: (req, res) => {
-        console.log("session: ", req.session)
-        console.log("session id: ", req.session.id)
-        console.log("session name: ", req.session.name)
         User.findAll({
             include: [
                 {
@@ -84,7 +82,9 @@ module.exports = {
                 res.status(200).json({
                     token: jwt.sign({
                         id: data.id,
-                        name: data.name
+                        name: data.name,
+                        TempUserId: data.TempUserId,
+                        age: data.age
                     }, process.env.SESSION_SECRET)
                 })
             })
@@ -146,27 +146,31 @@ module.exports = {
             res.status(200).json({
                 token: jwt.sign({
                     id: data.id,
-                    name: data.name
+                    name: data.name,
+                    TempUserId: data.TempUserId,
+                    age: data.age
                 }, process.env.SESSION_SECRET)
             })
-            // if(data.name) {
-            //     console.log(req.session);
-            //     req.session.id = data.id
-            //     req.session.name = data.name
-            // }
-            // res.json({
-            //     data: data,
-            //     session: req.session
-            // })
         }).catch((err) => {
             res.json(err)
         })
     },
 
-    isAuthenticate: (req, res, next) => {
-        if (req.session.name)
-            return next();
-
-        res.json('not login');
+    isAuthenticateToken: (req, res, next) => {
+        const UserToken = decode(req.get("personalNoteToken"))
+        if (req.get("personalNoteToken")) {
+            User.findOne({
+                where: {
+                    id: UserToken.id
+                }
+            }).then((data) => {
+                if (data) return next()
+            }).catch((err) => {
+                res.json(err)
+            })
+        }
+        else {
+            res.json('not login');
+        }
     }
 }
