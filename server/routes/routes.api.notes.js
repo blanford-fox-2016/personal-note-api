@@ -3,7 +3,7 @@ var router = express.Router();
 var noteControllers = require('../controllers/controllers.api.notes')
 
 router.get('/seed', noteControllers.seedUserAndNote)
-router.get('', noteControllers.isAuthenticateToken, noteControllers.getAllNotes)
+router.get('/', noteControllers.isAuthenticateToken, noteControllers.getAllNotes)
 router.get('/:id', noteControllers.isAuthenticateToken, noteControllers.getNoteById)
 router.post('/', noteControllers.isAuthenticateToken, noteControllers.createNote)
 router.put('/', noteControllers.isAuthenticateToken, noteControllers.updateNote)
