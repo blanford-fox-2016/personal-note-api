@@ -33,19 +33,19 @@ describe("Test for notes", () => {
             })
     })
 
-    describe("Login User", () => {
-        it("Expect to return session name that user has been login", (done) => {
-            chai.request(app)
-                .post('/api/users/login')
-                .send({
-                    name: 'name a'
-                })
-                .end((err, res) => {
-                console.log("ini session: ", res.body)
-                    done()
-                })
-        })
-    })
+    // describe("Login User", () => {
+    //     it("Expect to return session name that user has been login", (done) => {
+    //         chai.request(app)
+    //             .post('/api/users/login')
+    //             .send({
+    //                 name: 'name a'
+    //             })
+    //             .end((err, res) => {
+    //             console.log("ini session: ", res.body)
+    //                 done()
+    //             })
+    //     })
+    // })
 
     describe("Test if can get all notes", () => {
         it("Expect to return all list of notes", (done) => {
