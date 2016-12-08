@@ -31,13 +31,7 @@ module.exports = {
     },
 
     getAllUsers: (req, res) => {
-        User.findAll({
-            include: [
-                {
-                    model: Note
-                }
-            ]
-        }).then((data) => {
+        User.findAll().then((data) => {
             res.json(data)
         }).catch((err) => {
             res.json(err)

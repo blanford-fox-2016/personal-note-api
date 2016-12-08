@@ -1,6 +1,7 @@
 const models = require('../models')
 const User = models.User
 const Note = models.Note
+const UserNote = models.UserNote
 const decode = require('jwt-decode')
 
 module.exports = {
@@ -44,10 +45,13 @@ module.exports = {
     getAllNotes: (req, res) => {
         console.log("ini header: ", decode(req.get("personalNoteToken")))
         const UserToken = decode(req.get("personalNoteToken"))
-        Note.findAll({
+        UserNote.findAll({
             include: [
                 {
                     model: User
+                },
+                {
+                    model: Note
                 }
             ],
             order: [
@@ -64,15 +68,18 @@ module.exports = {
     },
 
     getNoteById: (req, res) => {
-        Note.findOne({
+        UserNote.findOne({
             include: [
                 {
                     model: User
+                },
+                {
+                    model: Note
                 }
             ]
         }, {
             where: {
-                id: req.params.id
+                UserId: req.params.id
             }
         }).then((data) => {
             res.json(data)
@@ -86,19 +93,28 @@ module.exports = {
             TempNoteId: req.body.TempNoteId,
             title: req.body.title,
             content: req.body.content,
-            UserId: req.body.UserId
         }).then((data) => {
-            // console.log(data)
-            // res.json(data)
-            // console.log("ini data 1 id: ", data.id)
-            // console.log("ini data 1: ", data)
-            Note.findOne({
-                where: {
-                    TempNoteId: req.body.TempNoteId
-                }
+            UserNote.create({
+                UserId: req.body.UserId,
+                NoteId: data.id
             }).then((data) => {
-                // console.log("data 2: ", data)
-                res.json(data)
+                console.log("ini data: ", data)
+                UserNote.findOne({
+                    include: [
+                        {
+                            model: User
+                        },
+                        {
+                            model: Note
+                        }
+                    ],
+                    where: {
+                        NoteId: data.NoteId,
+                        UserId: data.UserId
+                    }
+                }).then((data) => {
+                    res.json(data)
+                })
             })
         }).catch((err) => {
             res.json(err)
@@ -106,6 +122,7 @@ module.exports = {
     },
 
     updateNote: (req, res) => {
+        console.log(req.body)
         Note.update({
             title: req.body.title,
             content: req.body.content
@@ -113,10 +130,18 @@ module.exports = {
             where: {
                 TempNoteId: req.body.TempNoteId
             }
-        }).then(() => {
-            Note.findOne({
+        }).then((data) => {
+            UserNote.findOne({
+                include: [
+                    {
+                        model: User
+                    },
+                    {
+                        model: Note
+                    }
+                ],
                 where: {
-                    id: req.body.id
+                    NoteId: req.body.NoteId
                 }
             }).then((data) => {
                 res.json(data)
@@ -135,6 +160,32 @@ module.exports = {
             res.json(data)
         }).catch((err) => {
             res.json(err)
+        })
+    },
+
+    shareNote: (req, res) => {
+        const UserToken = decode(req.get("personalNoteToken"))
+        // console.log("masuk share:", User.id)
+        User.findAll({
+            include: [
+                {
+                    model: UserNote
+                }
+            ],
+            where: {
+                id: {
+                    $ne: UserToken.id
+                }
+            }
+        }).then((data) => {
+            data.map((item) => {
+                UserNote.create({
+                    UserId: item.id,
+                    NoteId: req.body.id
+                })
+            })
+        }).catch((err) => {
+            res.json((err))
         })
     },
 
